@@ -39,7 +39,6 @@
     		<appenderref ref="ErrorFileLogger" />
 		</root>
 
-
     </loggers>
 </configuration>
 

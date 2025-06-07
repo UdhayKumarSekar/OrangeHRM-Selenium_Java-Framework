@@ -16,7 +16,8 @@ public class LoginPage {
 	
 	private By password_field = By.cssSelector("input[type='password']");
 	
-	private By logIn_btn = By.xpath("//button[text() = ' Login ']");
+//	private By logIn_btn = By.xpath("//button[normalize-space()='Login']");
+	private By logIn_btn = By.xpath("//button[text()=' Login ']");
 	
 	private By error_Msg = By.xpath("//p[text()='Invalid credentials']");
 	

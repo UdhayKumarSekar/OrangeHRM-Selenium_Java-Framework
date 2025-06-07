@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -34,7 +35,7 @@ public class Actiondriver {
 		System.out.println("WebDriver Instance is Created...");
 	}
 
-//	Method to scroll the page to an element
+//	Method to scroll the page to the Particular element
 	public void scrollToElement(By by) {
 		try {
 
@@ -42,7 +43,7 @@ public class Actiondriver {
 
 			WebElement element = driver.findElement(by);
 			JavascriptExecutor jse = (JavascriptExecutor) driver;
-			jse.executeScript("arguments[0].scrollIntoView(true); ", element);
+			jse.executeScript("arguments[0].scrollIntoView(true);", element);
 		} catch (Exception e) {
 
 			applyBorder(by, "red");
@@ -55,17 +56,17 @@ public class Actiondriver {
 
 //	Method to wait for page to load
 	public void waitForPageToLoad(int timeOutInSecs) {
-		try {
-			wait.withTimeout(Duration.ofSeconds(timeOutInSecs));
-			wait.until(WebDriver -> ((JavascriptExecutor) WebDriver).executeScript("return document.readyState")
-					.equals("complete"));
 
-			System.out.println("Page Loaded Successfully");
+		try {
+			wait.withTimeout(Duration.ofSeconds(timeOutInSecs)).until(WebDriver -> ((JavascriptExecutor) WebDriver)
+					.executeScript("return document.readyState").equals("complete"));
+			logger.info("Page loaded successfully.");
+			
 		} catch (Exception e) {
 			System.out.println("page is not loaded with " + timeOutInSecs + " seconds. Exception: " + e.getMessage());
-			logger.info("****** Page Is Not  Responding ******");
-
+			logger.error("Page is not load within " + timeOutInSecs + " seconds. Exception: " + e.getMessage());
 		}
+		
 	}
 
 //	wait method for element to be click able
@@ -75,7 +76,7 @@ public class Actiondriver {
 		} catch (Exception e) {
 
 			System.out.println("Unable to Locate element also not clickable :  " + e.getMessage());
-			logger.info("****** Unable to Click the Element ******");
+			logger.error("****** Unable to Click on the Element ******" + e.getMessage());
 
 		}
 	}
@@ -86,7 +87,7 @@ public class Actiondriver {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		} catch (Exception e) {
 			System.out.println("Element is not visible:  " + e.getMessage());
-			logger.info("****** the Element is not Visible ******");
+			logger.error("****** the Element is not Visible ******" + e.getMessage());
 
 		}
 	}
@@ -97,7 +98,7 @@ public class Actiondriver {
 		String element_Description = getElementDescription(by);
 
 		try {
-			waitForElementTobeVisible(by);
+			
 			waitForElementTobeClickable(by);
 			driver.findElement(by).click();
 
@@ -112,8 +113,8 @@ public class Actiondriver {
 			applyBorder(by, "red");
 
 			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to Click on the Element",
-					element_Description + "Could not click on the element");
-			logger.info("****** Unable to Click on the Element ******");
+					element_Description + " Could not click on the element");
+			logger.error("****** Unable to Click on the Element ******");
 		}
 	}
 
@@ -122,22 +123,23 @@ public class Actiondriver {
 	public void enterText(By by, String value) {
 		try {
 			waitForElementTobeVisible(by);
-//			driver.findElement(by).clear();
-//			driver.findElement(by).sendKeys(value);
+
 			WebElement Input_element = driver.findElement(by);
 			Input_element.clear();
 			Input_element.sendKeys(value);
+			
 			logger.info(
 					"Entered the text on Input field & the element description: " + getElementDescription(by) + value);
 
 			applyBorder(by, "green");
 
 		} catch (Exception e) {
+			
 			System.out.println("Unable to Enter the text in input field: " + e.getMessage());
 
 			applyBorder(by, "red");
 
-			logger.info("****** Unable to Enter the text in Input field ******");
+			logger.error("****** Unable to Enter the text in Input field ******");
 
 		}
 	}
@@ -153,6 +155,7 @@ public class Actiondriver {
 //	we can use the WebElement here this will be the good practice
 //	2. this is how we can locate, get and use the element
 	public void Entervalue(By by, String text) {
+		
 		try {
 			WebElement input_field = getElement(by);
 			input_field.clear();
@@ -165,7 +168,7 @@ public class Actiondriver {
 
 			applyBorder(by, "red");
 
-			logger.info("****** Unable to send the text into the input field: " + e.getMessage() + " ******");
+			logger.error("****** Unable to send the text into the input field: " + e.getMessage() + " ******");
 		}
 	}
 
@@ -177,12 +180,14 @@ public class Actiondriver {
 			applyBorder(by, "green");
 
 			return driver.findElement(by).getText();
+			
 		} catch (Exception e) {
+			
 			System.out.println("Unable to get the Text: " + e.getMessage());
 
 			applyBorder(by, "red");
 
-			logger.info("****** Unable to get the Text: " + e.getMessage() + " ******");
+			logger.error("****** Unable to get the Text: " + e.getMessage() + " ******");
 
 			return " ";
 		}
@@ -214,7 +219,7 @@ public class Actiondriver {
 				ExtentManager.logFailure(BaseClass.getDriver(),
 						"Test for Comparing text verified Successfully! : " + actual_text,
 						" is not equals " + expected_text);
-				logger.info("******** Texts are Equal/Matching: " + actual_text + " Not equals " + expected_text
+				logger.error("******** Texts are Equal/Matching: " + actual_text + " Not equals " + expected_text
 						+ " *******");
 
 				return false;
@@ -226,7 +231,7 @@ public class Actiondriver {
 
 			System.out.println("Unable to Compare Texts: " + e.getMessage());
 
-			logger.info("Unable to Compare Texts: " + e.getMessage());
+			logger.error("Unable to Compare Texts: " + e.getMessage());
 		}
 		return false;
 	}
@@ -245,10 +250,10 @@ public class Actiondriver {
 				System.out.println("****** Element is Visible *******");
 				ExtentManager.logStep("Element is Displayed : " + getElementDescription(by));
 				logger.info("******* Element is Visible *******");
+				
+			} 
 				return isDisplayed;
-			} else {
-				return isDisplayed;
-			}
+			
 		} catch (Exception e) {
 
 			applyBorder(by, "red");
@@ -257,7 +262,7 @@ public class Actiondriver {
 
 			ExtentManager.logFailure(BaseClass.getDriver(), "Element is Not Displayed: ",
 					"Element is Not Displayed: " + getElementDescription(by));
-			logger.info(" ******* WebElement is Not Displayed: " + e.getMessage() + " ******* ");
+			logger.error(" ******* WebElement is Not Displayed: " + e.getMessage() + " ******* ");
 
 			return false;
 		}
@@ -274,14 +279,19 @@ public class Actiondriver {
 			ExtentManager.logStep("Element is Displayed");
 
 			logger.info("Element is Displayed; " + getElementDescription(by));
+			
 			return driver.findElement(by).isDisplayed();
 
 		} catch (Exception e) {
+			
 			System.out.println("Element is not Displayed: " + e.getMessage());
 
 			applyBorder(by, "red");
 
-			logger.info("******** Element is not Displayed: " + e.getMessage() + " ******** ");
+			ExtentManager.logFailure(BaseClass.getDriver(), "Element is Not Displayed: ",
+					"Element is Not Displayed: " + getElementDescription(by));
+			logger.error("******** Element is not Displayed: " + e.getMessage() + " ******** ");
+			
 			return false;
 		}
 	}
@@ -291,7 +301,7 @@ public class Actiondriver {
 
 //		check for null driver/locator to avoid null pointer exception
 		if (driver == null) {
-			return "driver is null";
+			return "driver is null/not Initialized";
 		}
 		if (locator == null) {
 			return "Locator is null";
@@ -302,29 +312,43 @@ public class Actiondriver {
 			WebElement element = driver.findElement(locator);
 
 			// Get Element Attributes and stored in variables
-			String name = element.getDomAttribute("name");
-			String id = element.getDomAttribute("id");
+			String name = element.getDomProperty("name");
+			String id = element.getDomProperty("id");
 			String text = element.getText();
-			String className = element.getDomAttribute("class");
-			String placeHolder = element.getDomAttribute("placeholder");
+			String className = element.getDomProperty("class");
+			String placeHolder = element.getDomProperty("placeholder");
 
 			// Return the description based on element attributes
 			if (isNotEmpty(name)) {
 				return "Name Of the Element: " + name;
-			} else if (isNotEmpty(id)) {
+			} 
+			
+			else if (isNotEmpty(id)) {
 				return "id Of the Element: 	" + id;
-			} else if (isNotEmpty(text)) {
+			} 
+			
+			else if (isNotEmpty(text)) {
 				return "text Of the Element: 	" + truncate(text, 50);
-			} else if (isNotEmpty(className)) {
+			} 
+			
+			else if (isNotEmpty(className)) {
 				return "className Of the Element: 	" + className;
-			} else if (isNotEmpty(placeHolder)) {
+			} 
+			
+			else if (isNotEmpty(placeHolder)) {
 				return "placeHolder Of the Element: 	" + placeHolder;
+			} 
+			
+			else {
+				return "Element was Located Using: " + locator.toString();
 			}
-		} catch (Exception e) {
+		} 
+		
+		catch (Exception e) {
+			e.printStackTrace();
 			logger.error("Unable to get the Element Description:  " + e.getMessage());
+			return "Unable to get Description of the Element";
 		}
-
-		return "Unable to get Description of the Element";
 	}
 
 //	Utility method to check a String is not Null/empty
@@ -339,7 +363,7 @@ public class Actiondriver {
 			return value;
 		}
 
-		return value.substring(0, maxLength) + "...";
+		return value.substring(0, maxLength) + "......";
 	}
 
 //	utility method to Border for an element
@@ -355,7 +379,7 @@ public class Actiondriver {
 			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript(script, element);
 
-			logger.info("Constructed a Border with colour " + colour + "to the particular Element "
+			logger.info("Constructed a Border with colour " + colour + " to the particular Element: "
 					+ getElementDescription(by));
 
 		} catch (Exception e) {
@@ -365,6 +389,7 @@ public class Actiondriver {
 
 	}
 
+	
 //	Methods for DropDown Elements using select tag
 //	Method for get the element based on visible text
 	public void selectByVisibleText(By by, String value) {
@@ -380,32 +405,41 @@ public class Actiondriver {
 		}
 	}
 
+	
 //	Method based on select by value
 	public void selectByvalue(By by, String value) {
 		try {
+			
 			WebElement element = driver.findElement(by);
 			new Select(element).selectByValue(value);
 			applyBorder(by, "green");
 			logger.info("Selected dropdown value based on a value: " + value);
+			
 		} catch (Exception e) {
+			
 			applyBorder(by, "red");
 			logger.error("Unable to get the dropdown element value " + value, e.getMessage());
 		}
 	}
 
+	
 //	Method based select by Index
 	public void selectByIndex(By by, int index_num) {
 		try {
+			
 			WebElement element = driver.findElement(by);
 			new Select(element).selectByIndex(index_num);
 			applyBorder(by, "green");
 			logger.info("Selected dropdown value based on Index: " + index_num);
+			
 		} catch (Exception e) {
+			
 			applyBorder(by, "red");
 			logger.error("Unable to select the element based on Index: " + index_num + e);
 		}
 
 	}
+	
 
 //	Method to get all options from a dropdown
 	public List<String> getDropdownOptions(By by) {
@@ -420,6 +454,7 @@ public class Actiondriver {
 			for (WebElement elements : select.getOptions()) {
 				element_list.add(elements.getText());
 			}
+			
 			applyBorder(by, "green");
 			logger.info("The List of Elements: " + getElementDescription(by));
 
@@ -432,9 +467,9 @@ public class Actiondriver {
 		return element_list;
 	}
 
-//	JavaScript Utility Method
+	
+//	JavaScript Utility Methods
 //	Method to click using JavaScript
-
 	public void clickUsingJs(By by) {
 
 		try {
@@ -550,9 +585,156 @@ public class Actiondriver {
 			ExtentManager.logStep("Page was Refreshed SuccessFully..");
 			logger.info("Page refreshed Successfully...");
 		} catch (Exception e) {
-			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to Refresh the page", "refresh cannot be done");
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to Refresh the page", "Failed to Refresh the Page");
 			logger.error("Unable to refresh Page: " + e.getMessage());
 		}
 	}
 	
+	
+//	Method for Get Current URL
+	public String getCurrentURL() {
+	
+		try {
+			String url = driver.getCurrentUrl();
+			ExtentManager.logStep("URL of the Current Web  Page: " + url);
+			logger.info("URL of the Current Web  Page: " + url);
+			return url;
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to fetch the URL of Current Page: ", "Failed to fetch the URL of Current Page");
+			logger.error("Unable to fetch current URL: "+e.getMessage());
+			return null;
+		}
+	}
+	
+	
+//	Method for maximize the window
+	public void maximizeWindow() {
+		
+		try {
+			driver.manage().window().maximize();
+			ExtentManager.logStep("The Browser Window was Maximized..");
+			logger.info("The Browser Window was Maximized..");
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to Maximize the window", "Failed to Maximize the window");
+			logger.error("Unable to Maximize the window: "+e.getMessage());
+		}
+	}
+	
+	
+//	Advanced WebElement Actions
+//	Method for move the element
+	public void moveToElement(By by) {
+		String element_Description = getElementDescription(by);
+		
+		try {
+			Actions actions = new Actions(driver);
+			actions.moveToElement(driver.findElement(by)).perform();;
+			ExtentManager.logStep("Moved To the element: "+element_Description);
+			logger.info("Moved  to the element --> " + element_Description);
+			
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to move to the Element", "Failed to move to the element");
+			logger.error("Unable To move To the Element: " + e.getMessage());
+		}
+	}
+	
+	
+//	Method for move the element Drag and Drop
+	public void dragAndDrop(By source, By target) {
+
+		String source_Destination_Description = getElementDescription(source);
+		String target_Destination_Description = getElementDescription(target);
+		
+		try {
+			Actions actions = new Actions(driver);
+			actions.dragAndDrop(driver.findElement(source), driver.findElement(target)).perform();
+			ExtentManager.logStep("Dragged Element Destination: " + source_Destination_Description + "Dropped Element Destination: " + target_Destination_Description );
+			logger.info("Dragged Element Destination: " + source_Destination_Description + "Dropped Element Destination: " + target_Destination_Description );
+			
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable To Drag the Element ", "Failed To Drag the Element ");
+			logger.error("Unable To Drag the Element : " + e.getMessage());
+		}
+		
+	}
+	
+	
+//	Method For Double Click Action
+	public void doubleClick(By by) {
+		
+		String element_Description = getElementDescription(by);
+		
+		try {
+			Actions actions = new Actions(driver);
+			actions.doubleClick(driver.findElement(by)).perform();
+			ExtentManager.logStep("Performed Double click on this Element: " + element_Description);
+			logger.info("Performed Double click on this Element: " + element_Description);
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to perform click action on the element", "Failed to perform click action on the element");
+			logger.error("Unable to perform click action on the element");
+		}	
+	}
+	
+//	Method for Right Click Action
+	public void rightClick(By by) {
+		String element_Description = getElementDescription(by);
+		
+		try {
+			Actions actions = new Actions(driver);
+			actions.sendKeys(driver.findElement(by)).perform();
+			ExtentManager.logStep("performed Right-click action on the Element: " + element_Description);
+			logger.info("performed Right-click action on the Element -->  " + element_Description);
+		
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to perform the Right Click Action ", " Failed to perform the Right Click Action ");
+			logger.error(" Unable to perform the Right Click Action " + e.getMessage());
+		}
+	}
+	
+	
+//	Method to perform the SendKeys Action
+	public void sendKeysWithActions(By by, String value) {
+		String element_Description = getElementDescription(by);
+		
+		try {
+			Actions actions = new Actions(driver);
+			actions.sendKeys(driver.findElement(by), value).perform();
+			ExtentManager.logStep("Performed SendKey Actions " + element_Description);
+			logger.info("The Input Action performed using Sendkey Method" + element_Description + "| Value: " + value );
+		} catch (Exception e) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to perform send Keys Action ", element_Description + "Failed to Perform SendKeys Action");
+			logger.error("Unable To Perform the Send Keys Action to the Element: " + e.getMessage());
+		}
+	}
+	
+//	Method to perform the Clear Text Actions
+	public void clearText(By by) {
+		String element_Description = getElementDescription(by);
+
+		try {
+
+			driver.findElement(by).clear();
+			ExtentManager.logStep("Cleared the Text Field Element:  " + element_Description);
+			logger.info("Cleared the Text Field Element-->  " + element_Description);
+
+		} catch (Exception e) {
+
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to Clear the Text Field Element ",
+					" Failed to Clear the Text Field Element " + element_Description);
+			logger.error("Unable to clear the Text Field:  " + e.getMessage());
+		}
+	}
+
+//	Method for Uploading a File 
+	public void uploadFile(By by, String file_Path) {
+		
+		try {
+			driver.findElement(by).sendKeys(file_Path);
+			applyBorder(by, "green");
+			logger.info("Uploaded File:  " + file_Path);
+		} catch (Exception e) {
+			applyBorder(by, "red");
+			logger.error("Unable to upload the File: " + e.getMessage());
+		}
+	}
 }

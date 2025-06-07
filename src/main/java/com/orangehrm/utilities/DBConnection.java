@@ -9,16 +9,21 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.orangehrm.base.BaseClass;
+import org.apache.logging.log4j.Logger;
+
 public class DBConnection {
 
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/orangehrm";
 	private static final String DB_USERNAME = "root";
 	private static final String DB_PASSWORD = "";
+	private static final Logger logger = BaseClass.logger;
 
 	public static Connection getDBConnection() {
 
 		try {
 
+			logger.info("DB Connection Initiated...");
 			System.out.println("Database Cennection Initiated ..!!");
 			Connection con = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 			System.out.println("Database Connection done successfully..!!");
@@ -27,6 +32,7 @@ public class DBConnection {
 
 		} catch (SQLException e) {
 
+			logger.error("Failed to make the DB Connection");
 			System.out.println("Error while Connecting to the Database..");
 			e.printStackTrace();
 			return null;
@@ -58,14 +64,18 @@ public class DBConnection {
 				employee_Details.put("middle_name", middle_name != null ? middle_name : "");
 				employee_Details.put("last_name", last_name);
 
+				logger.info("SQL query Executed Successfully..!");
+				logger.info("Employee Data Fetched Successfully : " + employee_Details);
 				System.out.println("SQL query Executed Successfully..!");
 				System.out.println("Employee Data Fetched Successfully : " + employee_Details);
 
 			} else {
+				logger.error("Employee Data NOt Found..");
 				System.out.println("Employee not Found..");
 			}
 		} catch (SQLException e) {
 			System.out.println("Error while executing SQL query..!!");
+			logger.info("Error while executing SQL query..!!");
 			e.printStackTrace();
 
 		}

@@ -21,7 +21,7 @@ public class LoginPageTest extends BaseClass {
 		home_page = new HomePage(getDriver());
 	}
 
-	@Test(dataProvider = "ValidLoginData", dataProviderClass = Dataprovider.class)
+	@Test(dataProvider = "ValidData", dataProviderClass = Dataprovider.class)
 	public void verifyValidLogInTest(String username, String password) {
 
 		ExtentManager.startTest("Test: Verify LogIn with Valid Credentials"); // --> Implemented in ITestListener Class
@@ -43,7 +43,7 @@ public class LoginPageTest extends BaseClass {
 
 	}
 
-	@Test(dataProvider = "InValidLoginData", dataProviderClass = Dataprovider.class)
+	@Test(dataProvider = "InValid Data", dataProviderClass = Dataprovider.class)
 	public void InvalidLoginTest(String username, String password) {
 
 		ExtentManager.startTest("Test: Verify LogIn with InValid Credentials"); // --> Implemented in ITestListener

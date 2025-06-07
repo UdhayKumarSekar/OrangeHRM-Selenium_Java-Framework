@@ -20,7 +20,7 @@ public class ExcelReader {
 		List<String[]> data = new ArrayList<>();
 
 //		getting excel file and sheet
-		try (FileInputStream fis = new FileInputStream(filePath); Workbook wb = new XSSFWorkbook()) {
+		try (FileInputStream fis = new FileInputStream(filePath); Workbook wb = new XSSFWorkbook(fis)) {
 			Sheet sh = wb.getSheet(sheetName);
 			if (sh == null) {
 				throw new IllegalArgumentException("Sheet " + sheetName + " is not exist !!!");
@@ -57,13 +57,16 @@ public class ExcelReader {
 		}
 
 		switch (cell.getCellType()) {
+		
 		case STRING:
 			return cell.getStringCellValue();
+			
 		case NUMERIC:
 
 			if (DateUtil.isCellDateFormatted(cell)) {
 				return cell.getDateCellValue().toString();
 			}
+			
 			return String.valueOf((int) cell.getNumericCellValue());
 
 		case BOOLEAN:

@@ -9,16 +9,16 @@ public class Dataprovider {
 	private static final String File_Path = System.getProperty("user.dir")
 			+ "/src/test/resources/testdata/TestData.xlsx";
 
-	@DataProvider(name = "ValidLoginData")
+	@DataProvider(name = "ValidData")
 	public static Object[][] ValidLoginData() {
 
-		return getSheetData("ValidLoginData");
+		return getSheetData("ValidData");
 	}
 
-	@DataProvider(name = "InValidLoginData")
+	@DataProvider(name = "Invalid Data")
 	public static Object[][] InValidLoginData() {
 
-		return getSheetData("InValidLoginData");
+		return getSheetData("Invalid Data");
 	}
 
 	@DataProvider(name="Emp_Data")

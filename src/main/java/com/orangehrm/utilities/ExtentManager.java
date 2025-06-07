@@ -25,7 +25,7 @@ public class ExtentManager {
 	private static Map<Long, WebDriver> drivermap = new HashMap<>();
 
 //	Initialize the Extent Report
-	public static ExtentReports getReport() {
+	public synchronized static ExtentReports getReport() {
 
 		if (extent == null) {
 			String report_path = System.getProperty("user.dir") + "/src/test/resources/ExtentReport/ExtentReport.html";
@@ -147,7 +147,7 @@ public class ExtentManager {
 
 			e.printStackTrace();
 		}
-//	convert screenshot to Base64 fir embedding the Report
+//	convert screenshot to Base64 for embedding the Report
 		String base64Format = convertToBase64(src);
 
 		return base64Format;

@@ -22,6 +22,7 @@ public class HomePage {
 	private By searchtab_ele = By.xpath("//div[@class='oxd-main-menu-search']");
 	private By PIM_ele = By.xpath("//span[normalize-space()='PIM']");
 	private By Leave_ele = By.xpath("//span[normalize-space()='Leave']");
+	private By My_info_tab = By.xpath("//a[@class='oxd-main-menu-item active']");
 
 //	Inside PIM For employee list
 	private By employee_search = By
@@ -70,12 +71,21 @@ public class HomePage {
 
 //	method to verify the Leave element
 	public boolean isLeaveElementVisible() {
-		return actiondriver.IsDisplayed(Leave_ele);
+		return actiondriver.IsDiplayed1(Leave_ele);
 	}
 
 //	Method to navigate PIM
 	public void clickOnPIM() {
 		actiondriver.clickontheElement(PIM_ele);
+	}
+	
+//	Method for MyInfo Tab
+	public boolean IsMyInfoVisible() {
+		return actiondriver.IsDiplayed1(My_info_tab);
+	}
+	
+	public void clickOnMyInfo() {
+		actiondriver.clickontheElement(My_info_tab);
 	}
 
 //	method to  Employee Search
