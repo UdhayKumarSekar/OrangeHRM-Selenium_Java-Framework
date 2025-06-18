@@ -13,6 +13,8 @@
 			<class name="com.OrangeHRM.test.PageTitleTest" />
 	<!--    <class name="com.OrangeHRM.test.DBVerificationTest"/>   -->
 			<class name="com.OrangeHRM.test.MyInfoDashBoardTest" />
+			<class name="com.OrangeHRM.test.APIDemoTest"/>
+			<class name="com.OrangeHRM.test.APIDemo2"/>
 		</classes>
 	</test>
 	
