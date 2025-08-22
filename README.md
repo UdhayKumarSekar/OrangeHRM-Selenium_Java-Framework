@@ -72,7 +72,7 @@ Coming soon! Run your Selenium tests in a containerized Selenium Grid using Dock
 
 Author
 👤 Udhay Kumar Sekar
-🔗 [GitHub](https://github.com/UdhayKumarSekar) | 💼 [LinkedIn](https://www.linkedin.com/in/udhaya-kumar-sekar-86198036b/)
+🔗 [GitHub](https://github.com/UdhayKumarSekar)
 
 📄 License
 This project is licensed under the MIT License.
